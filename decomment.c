@@ -94,9 +94,9 @@ enum Statetype handle_potential_comment(int currentchar) {
       followed by a char literal*/
    } else if (currentchar == '*') {
       state = in_comment;
-      putchar(' ');
    } else if (currentchar == '/') {
-      state = potential_comment;
+      putchar(' ');
+      state = normal_text;
    } else {
       putchar('/');
       putchar(currentchar);
@@ -109,6 +109,7 @@ enum Statetype handle_potential_comment(int currentchar) {
 enum Statetype handle_in_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '\n') {
+      putchar(currentchar);
       current_line++;
       state = in_comment;
    } else if (currentchar == '*') {
@@ -125,7 +126,10 @@ enum Statetype handle_in_comment(int currentchar) {
   or return to comment state if not, print spaces*/
   enum Statetype handle_potential_comment_end(int currentchar) {
    enum Statetype state;
-   if (currentchar == '/') {
+   if (currentchar == '\n') {
+      putchar(currentchar);
+      current_line++;
+   } else if (currentchar == '/') {
       state = normal_text;
    } else if (currentchar == '*') {
       state = potential_comment_end;
@@ -139,7 +143,7 @@ enum Statetype handle_in_comment(int currentchar) {
 int main(void){
    int currentchar;
    enum Statetype state = normal_text;
-   in_comment_block = 0; /* flag to track if insid a comment block*/
+   int in_comment_block = 0; /* flag to track if insid a comment block*/
 
    while ((currentchar = getchar()) != EOF) {
       if (currentchar == '\n') {
