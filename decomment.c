@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
-int current_line = 0;
+int current_line = 1;
 
 enum Statetype {normal_text, string_literal, esc_char_from_string_literal, 
    char_literal, esc_char_from_char_literal, potential_comment, 
@@ -121,10 +121,11 @@ enum Statetype handle_in_comment(int currentchar) {
   or return to comment state if not, print spaces*/
   enum Statetype handle_potential_comment_end(int currentchar) {
    enum Statetype state;
-   if (currentchar == '*') {
-      state = potential_comment_end;
-   } else if (currentchar == '/') {
+   if (currentchar == '/') {
+      putchar(' ');
       state = normal_text;
+   } else if (currentchar == '*') {
+      state = potential_comment_end;
    } else {
       state = in_comment;
    }
@@ -135,6 +136,8 @@ enum Statetype handle_in_comment(int currentchar) {
 int main(void){
    int currentchar;
    enum Statetype state = normal_text;
+   int in_comment_block = 0; /* flag to track if insid a comment block*/
+
    while ((currentchar = getchar()) != EOF) {
       if (currentchar == '\n') {
          current_line ++; }
@@ -165,7 +168,8 @@ int main(void){
             break;  
       }
    }
-   if (state == in_comment | state == potential_comment_end) {
+
+   if (in_comment_block) {
       fprintf (stderr, "Error: line %d: unterminated comment\n",
          current_line);
       return 1;
