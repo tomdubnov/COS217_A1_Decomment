@@ -38,7 +38,7 @@ enum Statetype handle_string_literal (int currentchar) {
       normal text*/
    } else if (currentchar == '\\') {
       putchar(currentchar);
-      state = esc_char_from_char_literal;
+      state = esc_char_from_string_literal;
    } else {
       putchar(currentchar); /*stay in string literal*/
       state = string_literal;
@@ -95,7 +95,7 @@ enum Statetype handle_potential_comment(int currentchar) {
       putchar(' ');
       state = in_comment;
    } else if (currentchar == '/') {
-      putchar('/');
+      putchar(' ');
       putchar(currentchar);
       state = potential_comment;
    } else {
