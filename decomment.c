@@ -107,7 +107,10 @@ enum Statetype handle_potential_comment(int currentchar) {
 /*In comment, don't print, look for the comment end, print spaces*/
 enum Statetype handle_in_comment(int currentchar) {
    enum Statetype state;
-   if (currentchar == '*') {
+   if (currentchar == '\n') {
+      putchar(' ');
+      state = in_comment;
+   } else if (currentchar == '*') {
       state = potential_comment_end;
    } else {
       state = in_comment;
