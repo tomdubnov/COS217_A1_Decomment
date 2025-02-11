@@ -82,10 +82,12 @@ enum Statetype handle_esc_char_from_char_literal(int currentchar) {
 enum Statetype handle_potential_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '"') {
+      putchar('/');
       putchar(currentchar);
       state = string_literal; /*false alarm: just a / 
       followed by a string literal*/
    } else if (currentchar == '\'') {
+      putchar('/');
       putchar(currentchar);
       state = char_literal; /*false alarm: just a / 
       followed by a char literal*/
@@ -93,9 +95,11 @@ enum Statetype handle_potential_comment(int currentchar) {
       putchar(' ');
       state = in_comment;
    } else if (currentchar == '/') {
+      putchar('/');
       putchar(currentchar);
       state = potential_comment;
    } else {
+      putchar('/');
       putchar(currentchar);
       state = normal_text;
    }
