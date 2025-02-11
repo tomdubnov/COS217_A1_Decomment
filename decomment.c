@@ -106,7 +106,7 @@ enum Statetype handle_in_comment(int currentchar) {
    if (currentchar == '*') {
       state = potential_comment_end;
    } else {
-      state = potential_comment;
+      state = in_comment;
    }
    return state;
 }
