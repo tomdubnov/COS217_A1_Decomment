@@ -92,12 +92,10 @@ enum Statetype handle_potential_comment(int currentchar) {
       state = char_literal; /*false alarm: just a / 
       followed by a char literal*/
    } else if (currentchar == '*') {
-      putchar(' ');
       state = in_comment;
    } else if (currentchar == '/') {
       putchar(' ');
-      putchar(currentchar);
-      state = potential_comment;
+      state = normal_text;
    } else {
       putchar('/');
       putchar(currentchar);
