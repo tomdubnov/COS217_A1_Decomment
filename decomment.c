@@ -140,7 +140,7 @@ enum Statetype handle_in_comment(int currentchar) {
 int main(void){
    int currentchar;
    enum Statetype state = normal_text;
-   in_comment_block = 0; /* flag to track if insid a comment block*/
+   int in_comment_block = 0; /* flag to track if insid a comment block*/
 
    while ((currentchar = getchar()) != EOF) {
       if (currentchar == '\n') {
