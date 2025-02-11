@@ -109,7 +109,7 @@ enum Statetype handle_in_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '\n') {
       putchar(' ');
-      current_line++
+      current_line++;
       state = in_comment;
    } else if (currentchar == '*') {
       state = potential_comment_end;
