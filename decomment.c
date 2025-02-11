@@ -14,16 +14,16 @@ enum Statetype {normal_text, string_literal, esc_char_from_string_literal,
 enum Statetype handle_normal_text(int currentchar) {
    enum Statetype state;
    if (currentchar == '"') {
+      putchar(currentchar); /*print quote*/  
       state = string_literal; /*transition to string literal state*/
-      putchar(toupper(currentchar)); /*print quote*/  
    } else if (currentchar == '\'') {
-      state = char_literal;
       putchar(currentchar);
+      state = char_literal;
    } else if (currentchar == '/') {
       state = potential_comment;
    } else {
-      state = normal_text;
       putchar(currentchar);
+      state = normal_text;
    }
    return state;
 }
@@ -33,15 +33,15 @@ print rest*/
 enum Statetype handle_string_literal (int currentchar) {
    enum Statetype state;
    if (currentchar == '"') {
+      putchar(currentchar); /*print quote*/
       state = normal_text; /*end of string literal, return to 
       normal text*/
-      putchar(currentchar); /*print quote*/
    } else if (currentchar == '\\') {
-      state = esc_char_from_char_literal;
       putchar(currentchar);
+      state = esc_char_from_char_literal;
    } else {
-      state = string_literal;
       putchar(currentchar); /*stay in string literal*/
+      state = string_literal;
    }
    return state;
 }
@@ -49,8 +49,8 @@ enum Statetype handle_string_literal (int currentchar) {
 /*Within esc char, removes power of next char, return to double quote*/
 enum Statetype handle_esc_char_from_string_literal(int currentchar){
    enum Statetype state;
-   state = string_literal;
    putchar(currentchar);
+   state = string_literal;
    return state;
 }
 
@@ -58,14 +58,14 @@ enum Statetype handle_esc_char_from_string_literal(int currentchar){
 enum Statetype handle_char_literal(int currentchar) {
    enum Statetype state;
    if (currentchar == '\'') {
-      state = normal_text; /*end of char literal, return to normal text*/
       putchar(currentchar); /*print quote*/
+      state = normal_text; /*end of char literal, return to normal text*/
    } else if (currentchar == '\\') {
+      putchar(currentchar);
       state = esc_char_from_char_literal;
-      putchar(currentchar);
    } else {
-      state = char_literal;
       putchar(currentchar);
+      state = char_literal;
    }
    return state;
 }
@@ -73,8 +73,8 @@ enum Statetype handle_char_literal(int currentchar) {
 /*Within esc char, removes power of next char, return to single quote*/
 enum Statetype handle_esc_char_from_char_literal(int currentchar) {
    enum Statetype state;
-   state = char_literal;
    putchar(currentchar);
+   state = char_literal;
    return state;
 }
 
@@ -82,20 +82,22 @@ enum Statetype handle_esc_char_from_char_literal(int currentchar) {
 enum Statetype handle_potential_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '"') {
-      state = string_literal; /*false alarm: just a / followed by a string literal*/
       putchar(currentchar);
+      state = string_literal; /*false alarm: just a / 
+      followed by a string literal*/
    } else if (currentchar == '\'') {
-      state = char_literal; /*false alarm: just a / followed by a char literal*/
       putchar(currentchar);
+      state = char_literal; /*false alarm: just a / 
+      followed by a char literal*/
    } else if (currentchar == '*') {
-      state = in_comment;
       putchar(' ');
+      state = in_comment;
    } else if (currentchar == '/') {
+      putchar(currentchar);
       state = potential_comment;
-      putchar(currentchar);
    } else {
-      state = normal_text;
       putchar(currentchar);
+      state = normal_text;
    }
    return state;
 }
