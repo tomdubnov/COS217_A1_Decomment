@@ -1,0 +1,196 @@
+
+
+#include <stdio.h>
+#include <ctype.h>
+
+
+
+
+
+
+
+
+
+
+
+#include <stdio.h>
+
+int current_line = 1;
+char currentchar = 'a';
+int state = 0;
+
+void process_chars(char currentchar, int *state);
+void treat_normal_text_0 (char currentchar, int *state);
+void treat_string_literal_1 (char currentchar, int *state);
+void treat_esc_char_from_string_literal_2 (char currentchar,
+                                           int *state);
+void treat_char_literal_3 (char currentchar, int *state);
+void treat_esc_char_from_char_literal_4 (char currentchar, int *state);
+void treat_potential_comment_5 (char currentchar, int *state);
+void treat_in_comment_6 (char currentchar, int *state);
+void treat_potential_comment_end_7 (char currentchar, int *state);
+void treat_line_end_8 (int current_line);
+
+
+/*Rejection message in the case of an unterminated comment*/
+void print_error_message(int current_line) {
+   fprintf (stderr, "Error: line %d: unterminated comment\n",
+            current_line);
+}
+
+/*Reads the input stream character by character, transitioning cases*/
+void process_chars(char currentchar, int *state){
+
+
+   int main (void) {
+      int currentchar = 
+
+
+/*Read every character until the end of the file is reached*/
+   while ((currentchar = getchar()) != EOF) {
+      if (currentchar == '\n') {
+         treat_line_end_8(&current_line);
+      }
+
+      switch (*state) {
+         case 0: /*Start State*/
+            treat_normal_text_0 (currentchar, &state);
+            break;
+         case 1:
+            treat_string_literal_1 (currentchar, &state);
+            break;
+         case 2:
+            treat_esc_char_from_string_literal_2 (currentchar, &state);
+            break;
+         case 3:
+            treat_char_literal_3 (currentchar, &state);
+            break;
+         case 4:
+            treat_esc_char_from_char_literal_4 (currentchar, &state);
+            break;
+         case 5:
+            treat_potential_comment_5 (currentchar, &state);
+            break;
+         case 6:
+            treat_in_comment_6 (currentchar, &state);
+            break;
+         case 7:
+            treat_potential_comment_end_7 (currentchar, &state);
+         default:
+            break;
+      }
+   }
+
+   /*Once characters are processed, check if in unterminated comment*/
+   if (state == 6 | state == 7) {
+      print_error_message(current_line);
+      exit (EXIT_FAILURE);
+   }
+}
+
+
+   
+/*Handling normal text, switch in case of quote, comment, print rest*/
+void treat_normal_text_0(char currentchar, int *state) {
+   if (currentchar == '"') {
+      *state = 1; /*transition to string literal state*/
+      putchar(currentchar); /*print quote*/
+   } else if (currentchar == '\'') {
+      *state = 3;
+      putchar(currentchar);
+   } else if (currentchar == '/') {
+      *state = 5;
+   } else {
+      putchar(currentchar);
+   }
+}
+
+/*Within double quotes, switch if quote ends or escape char,  print rest*/
+void treat_string_literal_1(char currentchar, int *state) {
+   if (currentchar == '"') {
+      *state = 0; /*end of string literal, return to normal text*/
+      putchar(currentchar); /*print quote*/
+   } else if (currentchar == '\\') {
+      *state = 2;
+      putchar(currentchar);
+   } else {
+      putchar(currentchar); /*stay in string literal*/
+   }
+}
+
+/*Within esc char, removes power of next char, return to double quote*/
+void treat_esc_char_from_string_literal_2(char currentchar, int *state){
+   *state = 1;
+   putchar(currentchar);
+}
+
+/*Within single quote, switch if quote ends or escape char, print rest*/
+void treat_char_literal_3(char currentchar, int *state) {
+   if (currentchar == '\'') {
+      *state = 0; /*end of char literal, return to normal text*/
+      putchar(currentchar); /*print quote*/
+   } else if (currentchar == '\\') {
+      *state = 4;
+      putchar(currentchar);
+   } else {
+      putchar(currentchar);
+   }
+}
+
+/*Within esc char, removes power of next char, return to single quote*/
+void treat_esc_char_from_char_literal_4(char currentchar, int *state) {
+   *state = 3;
+   putchar(currentchar);
+}
+
+/*Comment might be starting, otherwise print it as normal text*/
+void treat_potential_comment_5(char currentchar, int *state) {
+   if (currentchar == '"') {
+      *state = 1; /*false alarm: just a / followed by a string literal*/
+      putchar(currentchar);
+   } else if (currentchar == '\'') {
+      *state = 3; /*false alarm: just a / followed by a char literal*/
+      putchar(currentchar);
+   } else if (currentchar == '*') {
+      *state = 6;
+   } else if (currentchar == '/') {
+      *state = 5;
+      putchar(currentchar);
+   } else {
+      *state = 0;
+      putchar(currentchar);
+   }
+}
+
+/*In comment, don't print, look for the comment end, print spaces*/
+void treat_in_comment_6(char currentchar, int *state) {
+   if (currentchar == '*') {
+      *state = 7;
+   } else if (currentchar == ' ') {
+      *state = 6;
+      putchar(currentchar);
+   } else {
+      *state = 6;
+   }
+}
+
+/*Comment may be ending, don't print, return to normal if ended
+  or return to comment state if not, print spaces*/
+void treat_potential_comment_end_7(char currentchar, int *state) {
+   if (currentchar == '*') {
+      *state = 7;
+   } else if (currentchar == '/') {
+      *state = 0;
+   } else if (currentchar == ' ') {
+      *state = 7;
+      putchar(currentchar);
+   } else {
+      *state = 6;
+   }
+}
+
+/*Increment the line count at the end of each line
+  Necessary for indicating on which line an error occurs*/
+void treat_line_end_8(int current_line) {
+   (current_line)++;
+}
