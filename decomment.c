@@ -4,9 +4,14 @@
 #include <ctype.h>
 
 
-enum Statetype {normal_text, string_literal, esc_char_from_string_literal, 
-   char_literal, esc_char_from_char_literal, potential_comment, 
-   in_comment, potential_comment_end};
+enum Statetype {normal_text, 
+   string_literal, 
+   esc_char_from_string_literal, 
+   char_literal, 
+   esc_char_from_char_literal, 
+   potential_comment, 
+   in_comment, 
+   potential_comment_end};
 
 
 /*Handling normal text, switch in case of quote, comment, print rest*/
@@ -145,7 +150,9 @@ int main(void){
 
    while ((currentchar = getchar()) != EOF) {
       if (currentchar == '\n') {
-         current_line++; }
+         if (state != in_comment && state != potential_comment_end) {
+            current_line++;
+         } }
       switch (state) {
          case normal_text:
             state = handle_normal_text(currentchar);
@@ -185,11 +192,12 @@ int main(void){
       if (currentchar == '\n') {
          inner_comment_line++;
       fprintf (stderr, "Error: line %d: unterminated comment\n",
-         (current_line - inner_comment_line));
+         current_line);
       return 1;
    }  
    return 0;
 }
 }
+
 
 
