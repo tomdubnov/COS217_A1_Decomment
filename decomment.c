@@ -145,7 +145,6 @@ enum Statetype handle_in_comment(int currentchar) {
 int main(void){
    int currentchar;
    enum Statetype state = normal_text;
-   int in_comment_block = 0; /* flag to track if insid a comment block*/
 
    while ((currentchar = getchar()) != EOF) {
       if (currentchar == '\n') {
@@ -182,9 +181,8 @@ int main(void){
       putchar('/');
    }
 
-   //if incomment or if inpotentialcommentend, printf, failure//
 
-   if (in_comment_block) {
+   if (state == in_comment || state == potential_comment_end) {
       fprintf (stderr, "Error: line %d: unterminated comment\n",
          current_line);
       return 1;
