@@ -191,7 +191,7 @@ int main(void){
       if (currentchar == '\n') {
          inner_comment_line++; }
       fprintf (stderr, "Error: line %d: unterminated comment\n",
-         current_line - inner_comment_line); 
+         (current_line - inner_comment_line)); 
       return 1; 
    }  
    return 0;
