@@ -172,13 +172,13 @@ int main(void){
             state = handle_potential_comment(currentchar);
             break; 
          case in_comment:
-         if (inner_comment_line == 0) {  // Set only once when comment starts
+         if (inner_comment_line == 0) {  
             inner_comment_line = current_line;
          }
             state = handle_in_comment(currentchar);
             break; 
          case potential_comment_end:
-         if (inner_comment_line == 0) {  // Set only once when comment starts
+         if (inner_comment_line == 0) { 
             inner_comment_line = current_line;
          }
             state = handle_potential_comment_end(currentchar);
