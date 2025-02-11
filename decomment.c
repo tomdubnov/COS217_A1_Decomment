@@ -88,7 +88,8 @@ enum Statetype handle_potential_comment(int currentchar) {
       state = char_literal; /*false alarm: just a / followed by a char literal*/
       putchar(currentchar);
    } else if (currentchar == '*') {
-      state = potential_comment_end;
+      state = in_comment;
+      putchar(' ');
    } else if (currentchar == '/') {
       state = potential_comment;
       putchar(currentchar);
@@ -104,9 +105,6 @@ enum Statetype handle_in_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '*') {
       state = potential_comment_end;
-   } else if (currentchar == ' ') {
-      state = potential_comment;
-      putchar(currentchar);
    } else {
       state = potential_comment;
    }
@@ -121,9 +119,6 @@ enum Statetype handle_in_comment(int currentchar) {
       state = potential_comment_end;
    } else if (currentchar == '/') {
       state = normal_text;
-   } else if (currentchar == ' ') {
-      state = potential_comment_end;
-      putchar(currentchar);
    } else {
       state = in_comment;
    }
