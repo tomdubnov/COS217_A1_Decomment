@@ -163,6 +163,7 @@ int main(void){
          /* Transitions between states based on the read char */
       switch (state) {
          case normal_text:
+            inner_comment_line = 0;
             state = handle_normal_text(currentchar);
             break;
          case string_literal:
@@ -180,14 +181,16 @@ int main(void){
          case potential_comment:
             state = handle_potential_comment(currentchar);
             break; 
-         case in_comment: 
+         case in_comment:
+         if (inner_comment_line == 0) {  
             inner_comment_line = current_line;
+         }
             state = handle_in_comment(currentchar);
             break; 
          case potential_comment_end:
-
+         if (inner_comment_line == 0) { 
             inner_comment_line = current_line;
-      
+         }
             state = handle_potential_comment_end(currentchar);
             break;
       }
