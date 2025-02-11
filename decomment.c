@@ -95,7 +95,6 @@ enum Statetype handle_potential_comment(int currentchar) {
    } else if (currentchar == '*') {
       state = in_comment;
    } else if (currentchar == '/') {
-      putchar(' ');
       state = normal_text;
    } else {
       putchar('/');
