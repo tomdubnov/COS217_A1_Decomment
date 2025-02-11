@@ -189,9 +189,9 @@ int main(void){
 
    if (state == in_comment || state == potential_comment_end) {
       if (currentchar == '\n') {
-         inner_comment_line++;
+         inner_comment_line++; }
       fprintf (stderr, "Error: line %d: unterminated comment\n",
-         current_line - inner_comment_line); } 
+         current_line - inner_comment_line); 
       return 1; 
    }  
    return 0;
