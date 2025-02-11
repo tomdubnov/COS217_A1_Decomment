@@ -185,7 +185,9 @@ int main(void){
             state = handle_in_comment(currentchar);
             break; 
          case potential_comment_end:
+
             inner_comment_line = current_line;
+      
             state = handle_potential_comment_end(currentchar);
             break;
       }
