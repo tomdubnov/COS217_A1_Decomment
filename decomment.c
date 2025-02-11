@@ -130,6 +130,7 @@ enum Statetype handle_in_comment(int currentchar) {
       putchar(currentchar);
       current_line++;
    } else if (currentchar == '/') {
+      putchar(' ');
       state = normal_text;
    } else if (currentchar == '*') {
       state = potential_comment_end;
