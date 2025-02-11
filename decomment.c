@@ -173,7 +173,7 @@ int main(void){
             state = handle_in_comment(currentchar);
             break; 
          case potential_comment_end:
-            state = handle_potential_comment(currentchar);
+            state = handle_potential_comment_end(currentchar);
             break;  
       }
    }
@@ -181,6 +181,8 @@ int main(void){
    if (state == potential_comment) {
       putchar('/');
    }
+
+   //if incomment or if inpotentialcommentend, printf, failure//
 
    if (in_comment_block) {
       fprintf (stderr, "Error: line %d: unterminated comment\n",
