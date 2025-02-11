@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 int current_line = 1;
-int in_comment_block = 0; /* flag to track if insid a comment block*/
+int in_comment_block = 0;
 
 enum Statetype {normal_text, string_literal, esc_char_from_string_literal, 
    char_literal, esc_char_from_char_literal, potential_comment, 
@@ -117,6 +117,7 @@ enum Statetype handle_in_comment(int currentchar) {
       state = in_comment;
    }
    in_comment_block = 1;
+
    return state;
 }
 
@@ -127,7 +128,6 @@ enum Statetype handle_in_comment(int currentchar) {
    if (currentchar == '/') {
       putchar(' ');
       state = normal_text;
-      in_comment_block = 0;
    } else if (currentchar == '*') {
       state = potential_comment_end;
    } else {
@@ -140,6 +140,7 @@ enum Statetype handle_in_comment(int currentchar) {
 int main(void){
    int currentchar;
    enum Statetype state = normal_text;
+   in_comment_block = 0; /* flag to track if insid a comment block*/
 
    while ((currentchar = getchar()) != EOF) {
       if (currentchar == '\n') {
