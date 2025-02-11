@@ -4,6 +4,7 @@
 #include <ctype.h>
 
 int current_line = 1;
+int in_comment_block = 0;
 
 enum Statetype {normal_text, string_literal, esc_char_from_string_literal, 
    char_literal, esc_char_from_char_literal, potential_comment, 
@@ -115,6 +116,8 @@ enum Statetype handle_in_comment(int currentchar) {
    } else {
       state = in_comment;
    }
+   in_comment_block = 1;
+
    return state;
 }
 
