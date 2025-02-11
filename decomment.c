@@ -125,8 +125,9 @@ enum Statetype handle_in_comment(int currentchar) {
    if (currentchar == '/') {
       putchar(' ');
       state = normal_text;
-   } else if (currentchar == '*') {
-      state = potential_comment_end;
+      in_comment_block = 0;
+   /*} else if (currentchar == '*') {
+      state = potential_comment_end;*/
    } else {
       state = in_comment;
    }
