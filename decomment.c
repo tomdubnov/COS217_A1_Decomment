@@ -130,6 +130,7 @@ enum Statetype handle_in_comment(int currentchar) {
    if (currentchar == '\n') {
       putchar(currentchar);
       current_line++;
+      state = in_comment;
    } else if (currentchar == '/') {
       state = normal_text;
    } else if (currentchar == '*') {
@@ -177,12 +178,15 @@ int main(void){
       }
    }
 
+   if (state == potential_comment) {
+      putchar('/');
+   }
+
    if (in_comment_block) {
       fprintf (stderr, "Error: line %d: unterminated comment\n",
          current_line);
       return 1;
-   } else { 
-      return 0;
    }  
+   return 0;
 }
 
