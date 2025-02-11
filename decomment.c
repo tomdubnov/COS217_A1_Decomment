@@ -94,6 +94,7 @@ enum Statetype handle_potential_comment(int currentchar) {
       followed by a char literal*/
    } else if (currentchar == '*') {
       state = in_comment;
+      putchar(' ');
    } else if (currentchar == '/') {
       putchar(' ');
       state = normal_text;
@@ -185,4 +186,3 @@ int main(void){
    }  
 }
 
-   
