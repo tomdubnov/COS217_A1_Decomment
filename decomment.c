@@ -109,6 +109,7 @@ enum Statetype handle_in_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '\n') {
       putchar(' ');
+      current_line++
       state = in_comment;
    } else if (currentchar == '*') {
       state = potential_comment_end;
@@ -125,9 +126,8 @@ enum Statetype handle_in_comment(int currentchar) {
    if (currentchar == '/') {
       putchar(' ');
       state = normal_text;
-      in_comment_block = 0;
-   /*} else if (currentchar == '*') {
-      state = potential_comment_end;*/
+   } else if (currentchar == '*') {
+      state = potential_comment_end;
    } else {
       state = in_comment;
    }
@@ -142,7 +142,7 @@ int main(void){
 
    while ((currentchar = getchar()) != EOF) {
       if (currentchar == '\n') {
-         current_line ++; }
+         current_line++; }
       switch (state) {
          case normal_text:
             state = handle_normal_text(currentchar);
