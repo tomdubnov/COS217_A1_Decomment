@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <ctype.h>
 
-int current_line = 1;
-int in_comment_block = 0;
 
 enum Statetype {normal_text, string_literal, esc_char_from_string_literal, 
    char_literal, esc_char_from_char_literal, potential_comment, 
@@ -111,14 +109,12 @@ enum Statetype handle_in_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '\n') {
       putchar(currentchar);
-      current_line++;
       state = in_comment;
    } else if (currentchar == '*') {
       state = potential_comment_end;
    } else {
       state = in_comment;
    }
-   in_comment_block = 1;
 
    return state;
 }
@@ -129,7 +125,6 @@ enum Statetype handle_in_comment(int currentchar) {
    enum Statetype state;
    if (currentchar == '\n') {
       putchar(currentchar);
-      current_line++;
       state = in_comment;
    } else if (currentchar == '/') {
       state = normal_text;
@@ -144,6 +139,7 @@ enum Statetype handle_in_comment(int currentchar) {
 
 int main(void){
    int currentchar;
+   int current_line = 1;
    enum Statetype state = normal_text;
 
    while ((currentchar = getchar()) != EOF) {
@@ -173,7 +169,9 @@ int main(void){
             break; 
          case potential_comment_end:
             state = handle_potential_comment_end(currentchar);
-            break;  
+            break;
+         /*case new_line:
+            state = handle_new_line(currentchar);*/ 
       }
    }
 
@@ -189,4 +187,7 @@ int main(void){
    }  
    return 0;
 }
+
+
+//doing it within main
 
