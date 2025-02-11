@@ -115,7 +115,6 @@ enum Statetype handle_in_comment(int currentchar) {
    } else if (currentchar == '*') {
       state = potential_comment_end;
    } else {
-      putchar(' ');
       state = in_comment;
    }
    in_comment_block = 1;
@@ -136,7 +135,6 @@ enum Statetype handle_in_comment(int currentchar) {
    } else if (currentchar == '*') {
       state = potential_comment_end;
    } else {
-      putchar(' ');
       state = in_comment;
    }
    return state;
@@ -188,4 +186,5 @@ int main(void){
    }  
 }
 
+   
    
